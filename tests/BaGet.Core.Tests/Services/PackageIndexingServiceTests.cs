@@ -1,3 +1,5 @@
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -58,5 +60,15 @@ namespace BaGet.Core.Tests.Services
         {
             await Task.Yield();
         }
+
+        [Fact]
+        public async Task Issue_513()
+        {
+            using (var packageStream = new MemoryStream(TestData.mailkit_2_4_1))
+            {
+                await _target.IndexAsync(packageStream, CancellationToken.None);
+            }
+        }
+
     }
 }
